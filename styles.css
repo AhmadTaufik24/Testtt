@@ -1,11 +1,11 @@
- 
+/* --- Reset & Pengaturan Dasar --- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-html, 
+html,
 body {
     overflow-x: hidden;
 }
@@ -15,36 +15,24 @@ body {
     background-color: #f0f2f5;
 }
 
-
 .page-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: var(--app-height, 100vh);
-    padding: 20px;
-    
-    /* Menambahkan perspektif untuk efek 3D pada kartu */
-    perspective: 1000px;
+    padding: 60px 20px;
 }
 
 /* --- Container Utama --- */
 .card-container {
     width: 100%;
-    max-width: 420px; /* Sedikit dilebarkan */
-    
-    /* max-height dihapus agar tinggi lebih fleksibel */
-    
+    max-width: 420px;
     background-color: #ffffff;
     border-radius: 24px;
     box-shadow: 0 15px 45px rgba(0, 0, 0, 0.15);
-    
     overflow: hidden;
     display: flex;
     flex-direction: column;
-
-    /* Menyiapkan kartu untuk transformasi 3D */
-    transform-style: preserve-3d;
-    transition: transform 0.1s ease-out;
 }
 
 /* --- Bagian Header & Profil --- */
@@ -57,26 +45,21 @@ body {
     background-repeat: no-repeat;
     background-position: right -40px center;
     background-size: auto 110%;
-    /* Membuat elemen di dalam header ikut dalam konteks 3D */
-    transform: translateZ(20px);
 }
 
-/* ... Sisa kode CSS lainnya tetap sama persis seperti sebelumnya ... */
-
-/* Sisa CSS Anda dari .logo sampai akhir diletakkan di sini */
 .logo {
     position: absolute;
     top: 20px;
     left: 20px;
     width: 110px;
     opacity: 0;
-    transform: translateZ(50px); /* Efek 3D untuk logo */
+    transform: translateX(-30px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 .profile-wrapper {
     opacity: 0;
-    transform: scale(0.8) translateZ(30px); /* Efek 3D untuk profil */
+    transform: scale(0.8);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     transition-delay: 0.2s;
 }
@@ -122,7 +105,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.15;
+    opacity: 0.50;
 }
 
 .buttons-wrapper {
@@ -150,11 +133,10 @@ body {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.4s ease-out, transform 0.4s ease-out, box-shadow 0.2s ease-in-out;
-    transform: translateZ(10px); /* Efek 3D untuk tombol */
 }
 
 .link-button:hover {
-    transform: scale(1.05) translateZ(25px); /* Efek 3D saat hover */
+    transform: scale(1.05);
     box-shadow: 0 8px 20px rgba(75, 174, 157, 0.4);
 }
 
@@ -212,4 +194,4 @@ body {
 .card-container::-webkit-scrollbar { width: 8px; }
 .card-container::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
 .card-container::-webkit-scrollbar-thumb { background-color: #a8a8a8; border-radius: 10px; border: 2px solid #f1f1f1; }
-.card-container::-webkit-scrollbar-thumb:hover { background-color: #8a8a8a; } 
+.card-container::-webkit-scrollbar-thumb:hover { background-color: #8a8a8a; }
