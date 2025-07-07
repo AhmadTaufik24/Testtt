@@ -1,13 +1,46 @@
+// --- Fungsi Perbaikan Tinggi Layar di HP ---
+const setAppHeight = () => {
+    const doc = document.documentElement;
+    doc.style.setProperty('--app-height', `${window.innerHeight}px`);
+};
+window.addEventListener('resize', setAppHeight);
+setAppHeight();
+
+
+// =======================================================
+// === LOGIKA BARU UNTUK EFEK 3D TILT INTERAKTIF =========
+// =======================================================
+const card = document.querySelector('.card-container');
+
+if (card) {
+    card.addEventListener('mousemove', (e) => {
+        const { clientX, clientY } = e;
+        const { left, top, width, height } = card.getBoundingClientRect();
+        
+        const x = clientX - left;
+        const y = clientY - top;
+
+        const rotateX = (y - height / 2) / (height / 2) * -7; // Rotasi sumbu X (maks 7 derajat)
+        const rotateY = (x - width / 2) / (width / 2) * 7; // Rotasi sumbu Y (maks 7 derajat)
+
+        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'rotateX(0deg) rotateY(0deg)'; // Kembali ke posisi normal
+    });
+}
+
+
+// --- Kode Lama Anda (untuk animasi, modal, dll) ---
 window.addEventListener('load', () => {
-    // Logika animasi yang sudah ada
+    // Fungsi Animasi Awal
     const cardContainer = document.querySelector('.card-container');
-    cardContainer.classList.add('loaded');
+    if (cardContainer) {
+        cardContainer.classList.add('loaded');
+    }
 
-    // =================================================================
-    // === LOGIKA FINAL UNTUK PASSWORD BERBEDA DI SETIAP TOMBOL =========
-    // =================================================================
-
-    // --- Pilih semua elemen dari HTML ---
+    // Fungsi Modal Password
     const semuaTombolProteksi = document.querySelectorAll('.proteksi');
     const modalOverlay = document.getElementById('password-modal-overlay');
     const passwordForm = document.getElementById('password-form');
@@ -17,12 +50,11 @@ window.addEventListener('load', () => {
     const cancelBtn = document.getElementById('cancel-password-btn');
     const errorMessage = document.getElementById('error-message');
 
-    // Variabel untuk menyimpan info dari tombol yang diklik
     let urlTujuanSaatIni = '';
-    let passwordBenarSaatIni = ''; // Variabel baru untuk password
+    let passwordBenarSaatIni = '';
 
-    // --- Fungsi untuk menampilkan & menyembunyikan modal ---
     function tampilkanModal() {
+        if (!modalOverlay) return;
         passwordForm.style.display = 'block';
         successMessage.style.display = 'none';
         modalOverlay.classList.remove('modal-hidden');
@@ -33,67 +65,62 @@ window.addEventListener('load', () => {
     }
 
     function sembunyikanModal() {
+        if (!modalOverlay) return;
         modalOverlay.classList.remove('visible');
-         setTimeout(() => {
+        setTimeout(() => {
             modalOverlay.classList.add('modal-hidden');
             passwordInput.value = '';
             errorMessage.textContent = '';
         }, 300);
     }
 
-    // --- Event Listener ---
-
-    // 1. Loop untuk setiap tombol yang punya kelas .proteksi
     semuaTombolProteksi.forEach(tombol => {
         tombol.addEventListener('click', function(event) {
             event.preventDefault();
-            // Ambil URL DAN PASSWORD dari atribut data tombol yang diklik
             urlTujuanSaatIni = tombol.dataset.url;
-            passwordBenarSaatIni = tombol.dataset.password; // <-- BARIS BARU
-            // Tampilkan modal
+            passwordBenarSaatIni = tombol.dataset.password;
             tampilkanModal();
         });
     });
 
-    // 2. Saat tombol "Lanjutkan" di dalam modal diklik
-    submitBtn.addEventListener('click', function() {
-        const passwordMasukan = passwordInput.value;
-
-        // Bandingkan dengan password dari tombol yang diklik
-        if (passwordMasukan === passwordBenarSaatIni) { // <-- PERUBAHAN DI SINI
-            // Tampilkan pesan sukses
-            passwordForm.style.display = 'none';
-            successMessage.style.display = 'block';
-
-            // Tunggu 2 detik, lalu arahkan ke URL yang sesuai
-            setTimeout(() => {
-                sembunyikanModal();
+    if (submitBtn) {
+        submitBtn.addEventListener('click', function() {
+            const passwordMasukan = passwordInput.value;
+            if (passwordMasukan === passwordBenarSaatIni) {
+                passwordForm.style.display = 'none';
+                successMessage.style.display = 'block';
                 setTimeout(() => {
-                    window.location.href = urlTujuanSaatIni;
-                }, 300);
-            }, 2000);
+                    sembunyikanModal();
+                    setTimeout(() => {
+                        window.location.href = urlTujuanSaatIni;
+                    }, 300);
+                }, 2000);
+            } else {
+                errorMessage.textContent = 'Password salah, coba lagi.';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        });
+    }
 
-        } else {
-            errorMessage.textContent = 'Password salah, coba lagi.';
-            passwordInput.value = '';
-            passwordInput.focus();
-        }
-    });
-    
-    // 3. Memungkinkan menekan "Enter"
-    passwordInput.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            submitBtn.click();
-        }
-    });
+    if (passwordInput) {
+        passwordInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                submitBtn.click();
+            }
+        });
+    }
 
-    // 4. Saat tombol "Batal" diklik
-    cancelBtn.addEventListener('click', sembunyikanModal);
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', sembunyikanModal);
+    }
 
-    // 5. Saat area gelap di luar kotak modal diklik
-    modalOverlay.addEventListener('click', function(event) {
-        if (event.target === modalOverlay) {
-            sembunyikanModal();
-        }
-    });
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', function(event) {
+            if (event.target === modalOverlay) {
+                sembunyikanModal();
+            }
+        });
+    }
 });
