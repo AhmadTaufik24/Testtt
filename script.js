@@ -7,9 +7,7 @@ window.addEventListener('resize', setAppHeight);
 setAppHeight();
 
 
-// =======================================================
-// === LOGIKA BARU UNTUK EFEK 3D TILT INTERAKTIF =========
-// =======================================================
+
 const card = document.querySelector('.card-container');
 
 if (card) {
