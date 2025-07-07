@@ -7,29 +7,6 @@ window.addEventListener('resize', setAppHeight);
 setAppHeight();
 
 
-
-const card = document.querySelector('.card-container');
-
-if (card) {
-    card.addEventListener('mousemove', (e) => {
-        const { clientX, clientY } = e;
-        const { left, top, width, height } = card.getBoundingClientRect();
-        
-        const x = clientX - left;
-        const y = clientY - top;
-
-        const rotateX = (y - height / 2) / (height / 2) * -7; // Rotasi sumbu X (maks 7 derajat)
-        const rotateY = (x - width / 2) / (width / 2) * 7; // Rotasi sumbu Y (maks 7 derajat)
-
-        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-    });
-
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = 'rotateX(0deg) rotateY(0deg)'; // Kembali ke posisi normal
-    });
-}
-
-
 // --- Kode Lama Anda (untuk animasi, modal, dll) ---
 window.addEventListener('load', () => {
     // Fungsi Animasi Awal
@@ -121,4 +98,4 @@ window.addEventListener('load', () => {
             }
         });
     }
-});  
+});
